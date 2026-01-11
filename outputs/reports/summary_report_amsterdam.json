@@ -1,0 +1,23 @@
+
+Solar Panel Suitability Analysis - Summary Report
+============================================================
+
+Dataset Overview:
+  Total Buildings: 281,608
+  Buildings with Scores: 281,608
+
+Suitability Score Statistics:
+  Mean:     33.1578
+  Median:   32.7560
+  Std Dev:  7.2357
+  Min:      20.0579
+  Max:      60.0000
+  Q1 (25%): 27.4649
+  Q3 (75%): 38.2293
+
+Highly Suitable Buildings (score > 42.00):
+  Count: 25,292
+  Percentage: 8.98%
+
+============================================================
+Report generated on: 2026-01-11 19:20:03

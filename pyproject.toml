@@ -1,0 +1,66 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "solar-panel-suitability"
+version = "0.1.0"
+description = "A geospatial analysis toolkit for identifying optimal rooftops for solar panel installation"
+authors = ["Val Onyando <valonyando@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/ValOnyando/ITC-Solar-Panel-Suitability-Mapping"
+repository = "https://github.com/ValOnyando/ITC-Solar-Panel-Suitability-Mapping"
+keywords = ["gis", "solar", "geospatial", "renewable-energy"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: GIS",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<4.0"
+geopandas = ">=0.14.0"
+rasterio = ">=1.3.0"
+shapely = ">=2.0.0"
+folium = ">=0.15.0"
+numpy = ">=1.24.0"
+pandas = ">=2.0.0"
+matplotlib = ">=3.7.0"
+seaborn = ">=0.12.0"
+requests = ">=2.31.0"
+flask = ">=3.0.0"
+flask-cors = ">=4.0.0"
+scipy = ">=1.10.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=7.4.0"
+pytest-cov = ">=4.1.0"
+black = ">=23.0.0"
+flake8 = ">=6.0.0"
+ipykernel = ">=6.25.0"
+jupyter = ">=1.0.0"
+
+[tool.poetry.scripts]
+solar-api = "src.api:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.black]
+line-length = 100
+target-version = ['py38', 'py39', 'py310', 'py311']
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["*/tests/*", "*/test_*.py"]

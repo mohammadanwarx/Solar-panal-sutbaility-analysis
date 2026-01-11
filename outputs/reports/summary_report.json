@@ -1,0 +1,32 @@
+{
+  "study_area": {
+    "total_buildings_analyzed": 3324,
+    "buildings_with_excellent_suitability": 324,
+    "buildings_with_good_suitability": 327,
+    "buildings_with_moderate_suitability": 1513,
+    "buildings_with_fair_suitability": 0,
+    "buildings_with_poor_suitability": 1160
+  },
+  "top_20_statistics": {
+    "total_roof_area_m2": 26696.347255083117,
+    "total_energy_potential_kwh_per_year": 4562708.46470419,
+    "avg_suitability_score": 98.95289298989428,
+    "avg_roof_area_m2": 1334.817362754156,
+    "avg_energy_potential_kwh_per_year": 228135.4232352095,
+    "min_suitability_score": 98.56621066930606,
+    "max_suitability_score": 99.95808365378592
+  },
+  "economic_potential": {
+    "estimated_total_investment_eur": 3203561.6706099743,
+    "estimated_annual_savings_eur": 1140677.1161760476,
+    "estimated_co2_reduction_tons_per_year": 2281.354232352095
+  },
+  "outputs_generated": {
+    "suitability_map": "../outputs/maps/suitability_map.png",
+    "scatter_analysis": "../outputs/figures/scatter_analysis.png",
+    "correlation_matrix": "../outputs/figures/correlation_matrix.png",
+    "statistical_summary": "../outputs/figures/statistical_summary.png",
+    "top_10_buildings": "../outputs/figures/top_10_buildings.png",
+    "priority_report_csv": "../outputs/reports/top_20_priority_buildings.csv"
+  }
+}
