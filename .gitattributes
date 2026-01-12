@@ -1,0 +1,9 @@
+# Exclude generated HTML files and outputs from language statistics
+outputs/** linguist-generated=true
+*.html linguist-vendored=true
+
+# Mark Jupyter notebooks as documentation
+*.ipynb linguist-documentation
+
+# Explicitly mark Python files
+*.py linguist-language=Python
