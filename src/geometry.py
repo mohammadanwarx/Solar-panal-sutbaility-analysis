@@ -211,6 +211,60 @@ def interpolate_solar_at_point(point: Point, solar_coords: np.ndarray,
         return float(solar_values[nearest_idx])
 
 
+def interpolate_solar_at_buildings(buildings_gdf: gpd.GeoDataFrame, 
+                                   solar_gdf: gpd.GeoDataFrame,
+                                   method: str = 'linear') -> gpd.GeoDataFrame:
+    """
+    Interpolate solar irradiance values for all buildings from solar data points.
+    
+    Parameters
+    ----------
+    buildings_gdf : gpd.GeoDataFrame
+        GeoDataFrame containing building footprints
+    solar_gdf : gpd.GeoDataFrame
+        GeoDataFrame containing solar data points with 'E_y' or similar column
+    method : str
+        Interpolation method: 'linear', 'nearest', or 'cubic'
+    
+    Returns
+    -------
+    gpd.GeoDataFrame
+        Buildings with added 'solar_irradiance_kwh_m2' column
+    """
+    # Extract coordinates and values from solar data
+    solar_coords = np.array([[point.x, point.y] for point in solar_gdf.geometry])
+    
+    # Try to find the solar energy column (could be 'E_y', 'solar_energy', etc.)
+    solar_col = None
+    for col in ['E_y', 'solar_energy', 'irradiance', 'solar_irradiance']:
+        if col in solar_gdf.columns:
+            solar_col = col
+            break
+    
+    if solar_col is None:
+        # Fallback: use first numeric column
+        numeric_cols = solar_gdf.select_dtypes(include=[np.number]).columns
+        if len(numeric_cols) > 0:
+            solar_col = numeric_cols[0]
+        else:
+            raise ValueError("No numeric column found in solar data")
+    
+    solar_values = solar_gdf[solar_col].values
+    
+    # Get building centroids and interpolate
+    centroids = buildings_gdf.geometry.centroid
+    solar_interpolated = []
+    
+    for centroid in centroids:
+        value = interpolate_solar_at_point(centroid, solar_coords, solar_values, method)
+        solar_interpolated.append(value)
+    
+    # Add to buildings GeoDataFrame
+    buildings_gdf['solar_irradiance_kwh_m2'] = solar_interpolated
+    
+    return buildings_gdf
+
+
 # ============================================================================
 # OOP approach: Building geometry processor
 # ============================================================================
@@ -459,8 +513,8 @@ if __name__ == "__main__":
     print("=" * 70)
     
     processor = BuildingGeometryProcessor(
-        buildings_path="data/test_footprints.json",
-        solar_path="data/test_solar.json"
+        buildings_path="data/footprints.json",
+        solar_path="data/solar.json"
     )
     
     # Process all buildings

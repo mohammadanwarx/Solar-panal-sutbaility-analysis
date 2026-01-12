@@ -104,7 +104,7 @@ The system produces actionable priority lists for sustainable urban energy plann
 │
 ├── notebooks/                   # Jupyter workflow (3 notebooks)
 │   ├── 01_data_exploration.ipynb      # Data acquisition, interpolation, exploration
-│   ├── 02_algorithm_development.ipynb # Algorithm testing and validation
+│   ├── 02_algorithm_development.ipynb # Algorithm testing and verification
 │   └── 03_visualization_demo.ipynb    # Results visualization and reports
 │
 ├── outputs/                     # Generated results
@@ -153,8 +153,8 @@ Poetry provides better dependency management and isolated environments.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/ValOnyando/ITC-Solar-Panel-Suitability-Mapping.git
-cd ITC-Solar-Panel-Suitability-Mapping
+git clone https://github.com/mohammadanwarx/Solar-panal-sutbaility-analysis.git
+cd Solar-panal-sutbaility-analysis
 
 # 2. Install Poetry (if not already installed)
 curl -sSL https://install.python-poetry.org | python3 -
@@ -175,8 +175,8 @@ poetry run pytest tests/ -v
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/ValOnyando/ITC-Solar-Panel-Suitability-Mapping.git
-cd ITC-Solar-Panel-Suitability-Mapping
+git clone https://github.com/mohammadanwarx/Solar-panal-sutbaility-analysis.git
+cd Solar-panal-sutbaility-analysis
 
 # 2. Create virtual environment
 python3 -m venv venv
@@ -218,7 +218,7 @@ jupyter notebook
 
 **Notebook 02 - Algorithm Development:**
 - Tests geometric calculations (area, orientation)
-- Validates solar energy formula: E = A × H × η × (1 - S)
+- Checks solar energy formula: E = A × H × η × (1 - S)
 - Implements shading analysis with KD-tree neighbor search
 - Demonstrates spatial algorithms (KD-tree, binary search, quicksort)
 - Calculates suitability scores with weighted criteria
@@ -482,11 +482,11 @@ pytest tests/test_ranking.py::test_suitability_score -v  # Single test
 ```
 
 **Test Examples:**
-- `test_calculate_roof_area()` - Validates shoelace formula accuracy
+- `test_calculate_roof_area()` - Checks shoelace formula accuracy
 - `test_calculate_orientation()` - Checks azimuth calculations (0-360°)
 - `test_solar_interpolation()` - Verifies griddata fallback behavior
 - `test_shading_factor_range()` - Ensures shading stays within 0-1
-- `test_kdtree_construction()` - Validates KD-tree builds correctly
+- `test_kdtree_construction()` - Checks KD-tree builds correctly
 - `test_binary_search_closest()` - Tests threshold search accuracy
 - `test_quicksort_correctness()` - Verifies sorting algorithm
 - `test_suitability_classification()` - Checks category boundaries
@@ -572,8 +572,8 @@ Contributions welcome! Please follow these steps:
 
 ## 📧 Contact
 
-**Authors:** Vallary Onyando & Mo Anwar  
-**Email:** valonyando@gmail.com  , mohammadanwarx99@gmail.com
+**Authors:** Mo Anwar  
+**Email:** mohammadanwarx99@gmail.com
 **Course:** Scientific Programming for Geospatial Sciences - ITC, University of Twente  
 **Date:** January 2026
 

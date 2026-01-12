@@ -313,9 +313,9 @@ def get_priority_list():
     
     # Convert to list
     results = []
-    for idx, row in top_buildings.iterrows():
+    for i, (idx, row) in enumerate(top_buildings.iterrows(), start=1):
         building = {
-            "rank": int(row.get('rank', idx + 1)),
+            "rank": int(row.get('rank', i)),
             "building_id": str(row.get('building_id', idx)),
             "suitability_score": float(row.get('suitability_score', 0)),
             "category": str(row.get('category', 'Unknown')),

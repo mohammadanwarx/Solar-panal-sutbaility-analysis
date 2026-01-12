@@ -2,7 +2,7 @@
 Shading Analysis Module
 Calculates shading effects from nearby buildings.
 """
-# Monday
+
 
 import numpy as np
 import geopandas as gpd

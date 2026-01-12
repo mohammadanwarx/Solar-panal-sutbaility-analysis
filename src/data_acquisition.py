@@ -13,9 +13,6 @@ import time
 from pathlib import Path
 
 #============================================================
-# 1. Fetch Building Footprints from PDOK BAG3D WFS
-#============================================================
-
 def fetch_pdok_buildings(
     area: Union[
         Tuple[float, float, float, float],  # bbox (WGS84)
@@ -90,9 +87,9 @@ def fetch_pdok_buildings(
         if batch_len < page_size:
             break
 
-    # -----------------------------
-    # Build GeoDataFrame and clip to exact area
-    # -----------------------------
+    # ----------------------------------------
+    # 3. Build GeoDataFrame and clip to exact area
+   
     if not features:
         buildings = gpd.GeoDataFrame(columns=["geometry"], geometry="geometry", crs="EPSG:28992")
     else:
@@ -100,18 +97,15 @@ def fetch_pdok_buildings(
         buildings = buildings.set_crs("EPSG:28992", allow_override=True)
         buildings = gpd.clip(buildings, area_proj)
 
-    # Save to file if output_path is given
+    # 4. Save (its optinal)
     if output_path:
         buildings.to_file(output_path, driver="GeoJSON")
 
     return buildings
 
-
-
-#==============================================================
-# 2. Fetch Solar PV Energy Data from PVGIS PVcalc API
 #==============================================================
 
+# solar 
 class PVGISPVCalcClient:
     """
       PV Energy = Radiation × Panel Physics × System Assumptions
@@ -189,57 +183,3 @@ class PVGISPVCalcClient:
     def save_geojson(self, geojson, filepath):
         with open(filepath, "w", encoding="utf-8") as f:
             json.dump(geojson, f, indent=2)
-
-
-if __name__ == "__main__":
-    # =============================================================================
-    # FULL AMSTERDAM DATA (Run once to fetch complete dataset)
-    # Uncomment the block below to fetch full Amsterdam data
-    # =============================================================================
-    """
-    print("=" * 60)
-    print("FETCHING FULL AMSTERDAM DATA (This will take about 22 minutes)")
-    print("=" * 60)
-    
-    amsterdam_full = (4.728, 52.278, 5.079, 52.431)  # ~35km × ~17km (full Amsterdam)
-    
-    # Fetch full building footprints
-    buildings_full = fetch_pdok_buildings(amsterdam_full, output_path="data/footprints.json")
-    print(f"✓ Saved {len(buildings_full)} buildings to data/footprints.json")
-    
-    # Fetch full solar data
-    client = PVGISPVCalcClient()
-    geojson_full = client.fetch_bbox_geojson(
-        bbox=amsterdam_full,
-        step_km=1.0,  # 1km grid spacing
-        sleep=0.01
-    )
-    client.save_geojson(geojson_full, "data/solar.json")
-    print(f"✓ Saved {len(geojson_full['features'])} solar points to data/solar.json")
-    """
-    
-    # =============================================================================
-    # TEST DATA (Smaller area for development and testing)
-    # This runs by default for quick iterations
-    # =============================================================================
-    print("=" * 60)
-    print("FETCHING TEST DATA (Small area for quick testing)")
-    print("=" * 60)
-    
-    amsterdam_test = (4.88, 52.36, 4.92, 52.38)  # ~3km × ~2km (Central Amsterdam)
-    
-    # Fetch test building footprints
-    buildings_test = fetch_pdok_buildings(amsterdam_test, output_path="data/test_footprints.json")
-    print(f"✓ Saved {len(buildings_test)} buildings to data/test_footprints.json")
-    
-    # Fetch test solar data
-    client = PVGISPVCalcClient()
-    geojson_test = client.fetch_bbox_geojson(
-        bbox=amsterdam_test,
-        step_km=1.0,  # 1km grid spacing
-        sleep=0.01
-    )
-    client.save_geojson(geojson_test, "data/test_solar.json")
-    print(f"✓ Saved {len(geojson_test['features'])} solar points to data/test_solar.json")
-    print("\n✓ Test data ready! Use test_footprints.json and test_solar.json for development.")
-

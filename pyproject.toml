@@ -6,11 +6,11 @@ build-backend = "poetry.core.masonry.api"
 name = "solar-panel-suitability"
 version = "0.1.0"
 description = "A geospatial analysis toolkit for identifying optimal rooftops for solar panel installation"
-authors = ["Val Onyando <valonyando@gmail.com>"]
+authors = ["Mo Anwar <mohammadanwarx99@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/ValOnyando/ITC-Solar-Panel-Suitability-Mapping"
-repository = "https://github.com/ValOnyando/ITC-Solar-Panel-Suitability-Mapping"
+homepage = "https://github.com/mohammadanwarx/Solar-panal-sutbaility-analysis"
+repository = "https://github.com/mohammadanwarx/Solar-panal-sutbaility-analysis"
 keywords = ["gis", "solar", "geospatial", "renewable-energy"]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -23,6 +23,8 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
 ]
+
+# src-layout: makes the src folder importable
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
