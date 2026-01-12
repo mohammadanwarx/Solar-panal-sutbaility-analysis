@@ -295,67 +295,8 @@ The analysis follows a multi-criteria approach combining geometric, environmenta
 
 ---
 
-## 🧪 Testing
 
-Comprehensive unit test coverage with 15+ tests across all modules:
 
-| Module | Tests | Coverage |
-|--------|-------|----------|
-| `test_geometry.py` | Roof area, orientation, interpolation | ✅ |
-| `test_solar.py` | Energy calculations, ROI, payback | ✅ |
-| `test_shading.py` | Shadow analysis, nearby search | ✅ |
-| `test_spatial_search.py` | KD-tree, binary search, quicksort | ✅ |
-| `test_ranking.py` | Scoring, classification, ranking | ✅ |
-| `test_data_acquisition.py` | WFS/PVGIS API clients | ✅ |
-| `test_api.py` | REST API endpoints (optional) | ✅ |
-
-**Run All Tests:**
-```bash
-pytest tests/ -v                      # Verbose output
-pytest tests/ --cov=src               # With coverage report
-pytest tests/ --cov=src --cov-report=html  # HTML coverage report
-```
-
-**Run Specific Tests:**
-```bash
-pytest tests/test_geometry.py -v     # Geometric functions
-pytest tests/test_spatial_search.py -v  # Algorithms
-pytest tests/test_ranking.py::test_suitability_score -v  # Single test
-```
-
-**Test Examples:**
-- `test_calculate_roof_area()` - Checks shoelace formula accuracy
-- `test_calculate_orientation()` - Checks azimuth calculations (0-360°)
-- `test_solar_interpolation()` - Verifies griddata fallback behavior
-- `test_shading_factor_range()` - Ensures shading stays within 0-1
-- `test_kdtree_construction()` - Checks KD-tree builds correctly
-- `test_binary_search_closest()` - Tests threshold search accuracy
-- `test_quicksort_correctness()` - Verifies sorting algorithm
-- `test_suitability_classification()` - Checks category boundaries
-
----
-
-## 📊 Results & Outputs
-
-### Generated Files
-
-**Maps:**
-- `suitability_map.png` - Choropleth map with color-coded suitability scores (0-100)
-- `data_exploration_map.html` - Interactive Folium map with building details
-
-**Figures:**
-- `scatter_analysis.png` - 4-panel analysis:
-  - Roof area vs. energy potential (r=0.94)
-  - Orientation vs. suitability (optimal at 180°)
-  - Shading factor vs. energy (negative correlation)
-  - Box plots by suitability class
-- `correlation_matrix.png` - Heatmap of all variable relationships
-- `statistical_summary.png` - Distributions and class breakdowns
-- `top_10_buildings.png` - Horizontal bar chart of highest-ranked buildings
-
-**Reports:**
-- `top_20_priority_buildings.csv` - Priority list with all metrics (test dataset)
-- `summary_report.json` - Statistics, classifications, economic estimates
 
 ### Key Findings (Test Dataset - 20 Buildings)
 
