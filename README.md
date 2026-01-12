@@ -1,12 +1,13 @@
 <div align="center">
 
-# ☀️ Solar Panel Suitability Mapping ☀️
+#  Solar Panel Suitability Mapping 
 
 ### *Identifying optimal rooftops for solar panel installation*
 
-![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
-![GeoPandas](https://img.shields.io/badge/GeoPandas-Vector%20Analysis-green.svg)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+[![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
+[![PyPI version](https://img.shields.io/pypi/v/solar-panel-suitability.svg)](https://pypi.org/project/solar-panel-suitability/)
+[![GeoPandas](https://img.shields.io/badge/GeoPandas-Vector%20Analysis-green.svg)](https://geopandas.org/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 *A geospatial analysis project using Python and vector-based GIS technologies*
 
@@ -18,67 +19,93 @@
 
 This project identifies and ranks buildings in Amsterdam based on their suitability for solar panel installation. Urban renewable energy transition requires systematic assessment of multiple factors. Our solution analyzes:
 
-- 🏗️ **Building geometry** - Roof area, orientation (azimuth), and height from BAG3D cadastral data
-- ☀️ **Solar irradiance** - Annual average solar radiation from PVGIS European database
-- 🌑 **Shading effects** - Shadow analysis from nearby buildings using KD-tree spatial indexing
-- ⚡ **Energy potential** - Annual kWh generation estimates with panel efficiency modeling
-- 📊 **Suitability scoring** - Weighted multi-criteria ranking (area, energy, orientation, shading)
+-  **Building geometry** - Roof area, orientation (azimuth), and height from BAG3D cadastral data
+-  **Solar irradiance** - Annual average solar radiation from PVGIS European database
+-  **Shading effects** - Shadow analysis from nearby buildings using KD-tree spatial indexing
+-  **Energy potential** - Annual kWh generation estimates with panel efficiency modeling
+-  **Suitability scoring** - Weighted multi-criteria ranking (area, energy, orientation, shading)
 
 The system produces actionable priority lists for sustainable urban energy planning, supporting Amsterdam's renewable energy goals.
 
 ---
 
-## 🛠️ Technologies
+## � Libraries Used
 
-<table>
-<tr>
-<td width="50%">
+**Geospatial Analysis:**
+- `geopandas` 1.1.2 - Vector data manipulation and spatial operations
+- `shapely` 2.1.0 - Geometric operations and polygon handling
+- `pyproj` 3.8.0 - Coordinate reference system transformations
+- `folium` 0.20.0 - Interactive web maps with Leaflet.js
 
-### 🐍 Core
-- **Python 3.8+** - Main programming language
+**Data Processing:**
+- `pandas` 2.3.3 - Data wrangling and tabular analysis
+- `numpy` 2.4.1 - Numerical computing and array operations
+- `scipy` 1.17.0 - Scientific computing and spatial interpolation
 
-### 🗺️ Geospatial Libraries
-- `geopandas` - Vector data manipulation
-- `rasterio` - Raster data processing
-- `shapely` - Geometric operations
-- `folium` / `leafmap` - Interactive mapping
-- `pyproj` - CRS transformations
+**Visualization:**
+- `matplotlib` 3.10.8 - Static plots and choropleth maps
+- `seaborn` 0.13.2 - Statistical visualizations and heatmaps
+- `networkx` 3.x - Graph visualization for KD-tree neighbor analysis
 
-</td>
-<td width="50%">
+**Development & Testing:**
+- `pytest` 8.4.0 - Unit testing framework
+- `requests` 2.33.0 - HTTP requests for API clients
 
-### 📊 Data Analysis
-- `numpy` - Numerical computing
-- `pandas` - Data wrangling
-- `scipy` - Scientific computing
+---
 
-### 📈 Visualization
-- `matplotlib` - Static plots
-- `seaborn` - Statistical visualization
-- `plotly` - Interactive charts
+## 📊 Visualizations
 
-![Solar Potential Choropleth](outputs/maps/solar_potential_choropleth_amsterdam.png)
+### Amsterdam Buildings Solar Potential Map
 
-</td>
-</tr>
-</table>
+![Amsterdam Buildings Solar Potential](outputs/maps/Buildings-solar-potential.png)
+
+Interactive map showing all analyzed buildings in Amsterdam colored by their solar energy potential. Buildings are ranked from high potential (dark green) to low potential (light yellow), helping identify priority areas for solar panel installation.
+
+---
+
+### Suitability Analysis Map
+
+![Suitability Map](outputs/maps/suitability_map.png)
+
+Choropleth visualization displaying building suitability scores (0-100) based on weighted criteria: energy potential (40%), roof orientation (20%), shading factor (20%), and roof area (20%). Darker colors indicate higher suitability.
+
+---
+
+### Correlation Matrix
+
+![Correlation Matrix](outputs/figures/correlation_matrix.png)
+
+Heatmap showing relationships between key variables. Strong positive correlation (r=0.94) between roof area and energy potential confirms larger roofs generate more energy. Shading shows strong negative correlation with suitability (r=-0.67).
+
+---
+
+### Pairwise Analysis
+
+![Pairwise Analysis](outputs/figures/pairwise_analysis.png)
+
+Scatter plot matrix examining relationships between roof area, energy potential, orientation, and shading factors. Distribution plots on the diagonal reveal data patterns, while scatter plots show variable interactions.
+
+---
+
+### KD-Tree Spatial Neighbor Visualization
+
+![KD-Tree Visualization](outputs/figures/kdtree_visualization.png)
+
+Network graph visualization showing the KD-tree spatial indexing structure used for efficient neighbor search in shading analysis. Each node represents a building, with edges connecting spatial neighbors within 100m radius.
 
 ---
 
 ## 📁 Project Structure
 
 ```
-├── data/                        # Generated datasets (in .gitignore)
-│   ├── buildings_with_shading.json          # Buildings with shadow analysis
-│   ├── buildings_with_solar_analysis.json   # Buildings with energy calculations
-│   ├── footprints.json                      # BAG3D building footprints
-│   ├── processed_buildings.json             # Full Amsterdam processed data
-│   ├── ranked_buildings.json                # Full Amsterdam ranked results
+├── data/                        # Generated datasets (large files in .gitignore)
+│   ├── buildings_with_shading.json          # Buildings with shadow analysis (~666MB)
+│   ├── buildings_with_solar_analysis.json   # Buildings with energy calculations (~690MB)
+│   ├── footprints.json                      # BAG3D building footprints (~645MB)
+│   ├── ranked_buildings.json                # Full Amsterdam ranked results (~675MB)
+│   ├── processed_test_buildings.json        # Test dataset (20 buildings)
 │   ├── solar.json                           # PVGIS solar irradiance grid
-│   ├── top_100_buildings.json               # Top 100 priority buildings
-│   ├── test_*.json                          # Test datasets (20 buildings)
-│   ├── ranked_test_buildings.json           # Test ranked results
-│   └── top_20_test_buildings.json           # Top 20 test priorities
+│   └── gitkeep.txt                          # Keep directory in git
 │
 ├── src/                         # Core implementation modules
 │   ├── __init__.py
@@ -108,86 +135,64 @@ The system produces actionable priority lists for sustainable urban energy plann
 │   └── 03_visualization_demo.ipynb    # Results visualization and reports
 │
 ├── outputs/                     # Generated results
-│   ├── maps/
-│   │   ├── suitability_map.png           # Choropleth map
-│   │   └── data_exploration_map.html     # Interactive Folium map
-│   ├── figures/
-│   │   ├── scatter_analysis.png          # 4-panel scatter plots
-│   │   ├── correlation_matrix.png        # Heatmap
-│   │   ├── statistical_summary.png       # Distributions
-│   │   └── top_10_buildings.png          # Ranked chart
-│   └── reports/
-│       ├── top_20_priority_buildings.csv # Priority list (test dataset)
-│       └── summary_report.json           # Statistics and metrics
+│   ├── maps/                    # Interactive HTML maps
+│   │   ├── data_exploration_map.html        # Initial exploration Folium map
+│   │   ├── solar_interactive_map.html       # Solar analysis interactive map
+│   │   ├── top_100_buildings.html           # Top 100 ranked buildings map
+│   │   └── top_20_buildings.html            # Top 20 priority buildings map
+│   ├── figures/                 # Static visualizations (PNG)
+│   │   ├── correlation_matrix.png           # Feature correlation heatmap
+│   │   ├── kdtree_visualization.png         # KD-tree spatial neighbor graph
+│   │   ├── pairwise_analysis.png            # Scatter plot matrix
+│   │   └── Pairwise Analysis Plot.png       # Alternative pairwise view
+│   └── reports/                 # Data exports and summaries
+│       ├── summary_report_amsterdam.json    # Full Amsterdam statistics
+│       ├── summary_report.json              # Test dataset summary
+│       ├── top_100_priority_buildings_amsterdam.csv  # Amsterdam top 100
+│       └── top_20_priority_buildings.csv    # Test dataset top 20
 │
 ├── docs/                        # Documentation
-│   ├── api_documentation.md    # REST API documentation
-│   └── data_acquisition_guide.md # Data source instructions
+│   ├── api_documentation.md             # REST API documentation
+│   └── data_acquisition_guide.md        # Data source instructions
 │
-├── .gitignore                  # Excludes data/ and outputs/
+├── dist/                        # PyPI distribution packages
+│   ├── solar_panel_suitability-0.1.0-py3-none-any.whl  # Wheel package
+│   └── solar_panel_suitability-0.1.0.tar.gz            # Source distribution
+│
+├── .git/                        # Git version control
+├── .gitattributes              # GitHub language statistics configuration
+├── .gitignore                  # Excludes large data files, outputs, cache
+├── .venv/                      # Virtual environment
 ├── LICENSE                     # MIT License
 ├── pytest.ini                  # Pytest configuration
-├── pyproject.toml              # Poetry packaging configuration
-├── README.md                   # Project documentation
+├── pyproject.toml              # Poetry packaging & PyPI metadata
+├── README.md                   # Project documentation (this file)
 └── requirements.txt            # Python dependencies (pip)
 ```
 
-**Key Files:**
-- **Test datasets** (`test_*.json`) - 20 buildings for rapid development/testing
-- **Production datasets** (no prefix) - 100+ buildings for full Amsterdam analysis
-- **Notebooks** - Complete workflow from data acquisition to visualization
-- **Tests** - 15+ unit tests ensuring algorithm correctness
+**Key Notes:**
+- **Large data files** (600-700MB JSON files) are excluded from git tracking via `.gitignore`
+- **PyPI distribution** files in `dist/` folder ready for publishing
+- **Language statistics** configured via `.gitattributes` to show Python as primary language
+- **Notebooks** provide complete workflow from data acquisition to visualization
+- **Tests** include 15+ unit tests ensuring algorithm correctness
+- **Virtual environment** (`.venv/`) isolates project dependencies
 
 ---
 
 ## 🚀 Installation & Setup
 
-### Prerequisites
-- Python 3.11+ (tested with 3.11.11)
-- Git for version control
-- [Poetry](https://python-poetry.org/) (recommended) or pip
+### Quick Install from PyPI
 
-### Option 1: Using Poetry (Recommended)
-
-Poetry provides better dependency management and isolated environments.
+The easiest way to install the package:
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/mohammadanwarx/Solar-panal-sutbaility-analysis.git
-cd Solar-panal-sutbaility-analysis
-
-# 2. Install Poetry (if not already installed)
-curl -sSL https://install.python-poetry.org | python3 -
-# Or on Windows (PowerShell):
-# (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | py -
-
-# 3. Install all dependencies
-poetry install
-
-# 4. Activate the virtual environment
-poetry shell
-
-# 5. Verify installation
-poetry run pytest tests/ -v
+pip install solar-panel-suitability
 ```
 
-### Option 2: Using pip
+This installs the package and all dependencies automatically. Perfect for using the library in your own projects.
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/mohammadanwarx/Solar-panal-sutbaility-analysis.git
-cd Solar-panal-sutbaility-analysis
-
-# 2. Create virtual environment
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# 3. Install dependencies
-pip install -r requirements.txt
-
-# 4. Verify installation
-pytest tests/ -v
-```
+📖 **[View on PyPI](https://pypi.org/project/solar-panel-suitability/)** | **[Installation Guide](https://pypi.org/project/solar-panel-suitability/#description)**
 
 ---
 
@@ -258,8 +263,8 @@ pytest tests/test_geometry.py -v            # Specific test file
 
 | Source | Description | Access Method | Usage |
 |--------|-------------|---------------|-------|
-| 🏢 **[PDOK BAG3D](https://www.pdok.nl/)** | Dutch 3D building cadastre with heights, roof types | WFS API | Building geometries, `b3_h_max` heights |
-| ☀️ **[PVGIS](https://re.jrc.ec.europa.eu/pvg_tools/)** | EU solar irradiance database | PVcalc REST API | Annual solar radiation grid (kWh/m²/year) |
+|  **[PDOK BAG3D](https://www.pdok.nl/)** | Dutch 3D building cadastre with heights, roof types | WFS API | Building geometries, `b3_h_max` heights |
+|  **[PVGIS](https://re.jrc.ec.europa.eu/pvg_tools/)** | EU solar irradiance database | PVcalc REST API | Annual solar radiation grid (kWh/m²/year) |
 
 **Data Coverage:**
 - **Study Area:** Amsterdam city center (4.85-4.95°E, 52.35-52.40°N)
@@ -271,185 +276,22 @@ pytest tests/test_geometry.py -v            # Specific test file
 
 ## 🔬 Methodology
 
-### 🧮 Algorithms & Implementation
+The analysis follows a multi-criteria approach combining geometric, environmental, and spatial factors:
 
-<details open>
-<summary><strong>1️⃣ Geometric Analysis (`geometry.py`)</strong></summary>
+**Core Algorithms:**
+- **Geometric Analysis** - Calculates roof area using shoelace formula and orientation (azimuth) from building edges
+- **Shadow Analysis** - Uses KD-tree spatial indexing to find nearby buildings within 100m radius and calculates shading impact with RMS aggregation
+- **Energy Calculation** - Estimates annual solar potential: $E = A \times H \times \eta \times (1 - S)$
+- **Suitability Scoring** - Weighted ranking combining energy (40%), orientation (20%), shading (20%), and area (20%)
+- **Spatial Search** - Implements KD-tree ($O(n \log n)$), binary search ($O(\log n)$), and quicksort algorithms for efficient data processing
 
-- **Roof Area:** Shoelace formula applied to polygon coordinates
-- **Orientation:** Azimuth calculation from longest building edge (0°=North, 180°=South)
-- **Solar Interpolation:** SciPy `griddata` with linear/cubic/nearest methods
-- **Implementation:** Functional programming with pure functions (no side effects)
+**Classification Categories:**
+- Excellent (80-100), Good (60-79), Moderate (40-59), Poor (20-39), Unsuitable (0-19)
 
-**Key Functions:**
-- `calculate_roof_area(geometry)` - Returns area in m²
-- `calculate_roof_orientation(geometry)` - Returns azimuth 0-360°
-- `interpolate_solar_at_point(point, coords, values)` - Spatial interpolation
-
-</details>
-
-<details open>
-<summary><strong>2️⃣ Shadow Analysis (`shading.py`)</strong></summary>
-
-- **Spatial Search:** KD-tree to find buildings within 100m radius
-- **Per-Building Intensity:** Height difference, distance decay, size factor
-- **Aggregation:** Root Mean Square (RMS) to prevent overestimation
-- **Formula:** $I_j = \frac{h_{diff}}{50} \times (1 - \frac{d_j}{L_{shadow}}) \times size$, then $S = \sqrt{\frac{1}{k}\sum I_j^2}$
-
-**Key Functions:**
-- `find_nearby_buildings(target, all_buildings, radius=100)` - KD-tree range query
-- `calculate_shading_factor(geometry, height, nearby, sun_elevation=45)` - Returns 0-1
-
-</details>
-
-<details open>
-<summary><strong>3️⃣ Energy Calculation (`solar.py`)</strong></summary>
-
-- **Formula:** $E = A \times H \times \eta \times (1 - S)$
-  - $A$ = Roof area (m²)
-  - $H$ = Solar irradiance (kWh/m²/year)
-  - $\eta$ = Panel efficiency (0.18 = 18%)
-  - $S$ = Shading factor [0-1]
-
-**Key Functions:**
-- `calculate_solar_potential(area, irradiance, efficiency=0.18, shading_factor=0.0)` - Returns annual kWh
-- `calculate_roi(energy_kwh, price, cost_per_m2, area)` - Returns ROI percentage
-- `calculate_payback_period(energy_kwh, price, cost_per_m2, area)` - Returns years
-
-</details>
-
-<details open>
-<summary><strong>4️⃣ Suitability Scoring (`ranking.py`)</strong></summary>
-
-- **Weighted Combination:** Energy (40%), Orientation (20%), Shading (20%), Area (20%)
-- **Normalization:** Each factor scaled to 0-1 range
-- **Classification:** Excellent (80-100), Good (60-79), Moderate (40-59), Poor (20-39), Unsuitable (0-19)
-- **Formula:** $S = 0.4E + 0.2O + 0.2(1-S_{shade}) + 0.2A$, scaled to 0-100
-
-**Key Functions:**
-- `calculate_suitability_score(area, energy, shading, orientation, weights)` - Returns 0-100 score
-- `classify_building_suitability(score)` - Returns category string
-- `rank_buildings(gdf)` - Sorts and assigns rank numbers
-- `get_priority_list(gdf, top_n=100)` - Returns top N buildings
-
-</details>
-
-<details open>
-<summary><strong>5️⃣ Spatial Search Algorithms (`spatial_search.py`)</strong></summary>
-
-**KD-Tree Spatial Index (Class)**
-- **Construction:** $O(n \log n)$ time complexity
-- **Nearest Neighbors:** $O(\log n + k)$ for $k$ neighbors
-- **Range Query:** $O(\log n + m)$ where $m$ = results within radius
-- **Application:** Find buildings within 100m for shading analysis
-
-**Binary Search**
-- **Purpose:** Find building by score threshold
-- **Complexity:** $O(\log n)$ time, $O(1)$ space
-- **Precondition:** Buildings sorted by score
-- **Formula:** $mid = \lfloor \frac{low + high}{2} \rfloor$
-
-**QuickSort**
-- **Purpose:** Sort buildings by suitability (educational demo)
-- **Complexity:** Average $O(n \log n)$, worst-case $O(n^2)$
-- **Pivot:** Middle element selection
-- **Note:** Pandas Timsort used in production ($O(n \log n)$ guaranteed)
-
-**Key Classes & Functions:**
-- `SpatialIndex(buildings_gdf)` - Builds KD-tree from centroids
-- `find_nearest_neighbors(point, k)` - Returns k nearest as GeoDataFrame
-- `find_within_radius(point, radius)` - Range query
-- `binary_search_building_by_score(gdf, target, column)` - Returns closest index
-- `quicksort_buildings(gdf, column, ascending)` - Returns sorted GeoDataFrame
-
-</details>
-
-<details open>
-<summary><strong>6️⃣ Visualization (`visualization.py`)</strong></summary>
-
-- **Choropleth Maps:** Matplotlib-based with color scales
-- **Scatter Analysis:** 4-panel plots (area vs energy, orientation, shading, box plots)
-- **Correlation Matrix:** Seaborn heatmap
-- **Statistical Summaries:** Distributions, histograms, bar charts
-- **Output Formats:** PNG for maps/figures, CSV for reports, JSON for summaries
-
-**Key Functions:**
-- `plot_suitability_map(gdf, column, output_path)` - Choropleth PNG
-- `plot_correlation_matrix(gdf, output_path)` - Heatmap of correlations
-- `plot_top_buildings(gdf, top_n, output_path)` - Horizontal bar chart
-- `plot_scatter_analysis(gdf, x_col, y_col, output_path)` - Scatter plot
-- `generate_summary_report(gdf, output_path)` - Statistics JSON
-
-</details>
-
-### 📐 Mathematical Formulations
-
-**Complete Formula Set:**
-
-1. **Roof Area** (Shoelace Formula):
-   $$A = \frac{1}{2} \left| \sum_{i=0}^{n-1} (x_i y_{i+1} - x_{i+1} y_i) \right|$$
-
-2. **Orientation Score**:
-   $$O = 1 - \frac{|\theta - 180°|}{180}$$
-
-3. **Shading Intensity** (per building):
-   $$I_j = \frac{h_{diff}}{50} \times \left(1 - \frac{d_j}{L_{shadow}}\right) \times size_{factor}$$
-
-4. **Total Shading** (RMS aggregation):
-   $$S_{total} = \sqrt{\frac{1}{k}\sum_{j=1}^{k} I_j^2}$$
-
-5. **Energy Potential**:
-   $$E = A \times H \times \eta \times (1 - S)$$
-
-6. **Suitability Score**:
-   $$Score = 100 \times (0.4E_{norm} + 0.2O_{norm} + 0.2(1-S) + 0.2A_{norm})$$
-
-### 🔄 Processing Pipeline
-
-```mermaid
-graph TD
-    A[📥 INPUT: Buildings + Solar Data] --> B[📐 STEP 1-2: Calculate Roof Area]
-    B --> C[🧭 STEP 3: Calculate Orientation]
-    C --> D[☀️ STEP 4: Extract Solar Irradiance]
-    D --> E[🌑 STEP 5: Calculate Shading]
-    E --> F[⚡ STEP 6: Calculate Energy Production]
-    F --> G[💰 STEP 7: Calculate Economics]
-    G --> H[📊 STEP 8: Calculate Suitability Score]
-    H --> I[🏆 STEP 9: Classify Buildings]
-    I --> J[📈 STEP 10: Visualize Results]
-    J --> K[📤 OUTPUT: Suitability Map + Priority List]
-```
-
-<details>
-<summary>View text-based pipeline</summary>
-
-```
-INPUT → Buildings + Solar Data
-  ↓
-STEP 1-2: Calculate roof area (geometry)
-  ↓
-STEP 3: Calculate orientation (geometry)
-  ↓
-STEP 4: Extract solar irradiance (raster overlay)
-  ↓
-STEP 5: Calculate shading (spatial analysis)
-  ↓
-STEP 6: Calculate energy production (formula)
-  ↓
-STEP 7: Calculate economics (formula)
-  ↓
-STEP 8: Calculate suitability score (weighted combination)
-  ↓
-STEP 9: Classify buildings (categories)
-  ↓
-STEP 10: Visualize results (maps & charts)
-  ↓
-OUTPUT → Suitability map + priority list
-```
-
-**Note:** Vector data is prioritized throughout the workflow, with raster operations used only when necessary for efficiency.
-
-</details>
+**Data Integration:**
+- BAG3D building footprints via WFS API for geometry and heights
+- PVGIS solar irradiance database via REST API for annual radiation values
+- SciPy spatial interpolation to map solar values to building centroids
 
 ---
 
@@ -550,25 +392,6 @@ pytest tests/test_ranking.py::test_suitability_score -v  # Single test
 
 ---
 
-## 🤝 Contributing
-
-Contributions welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/AmazingFeature`)
-3. Make changes and add tests
-4. Run tests (`pytest tests/ -v`)
-5. Commit changes (`git commit -m 'Add AmazingFeature'`)
-6. Push to branch (`git push origin feature/AmazingFeature`)
-7. Open Pull Request
-
-**Code Style:**
-- Follow PEP 8 guidelines
-- Add docstrings to all functions
-- Write tests for new features
-- Keep functions focused and modular
-
----
 
 ## 📧 Contact
 
@@ -577,7 +400,7 @@ Contributions welcome! Please follow these steps:
 **Course:** Scientific Programming for Geospatial Sciences - ITC, University of Twente  
 **Date:** January 2026
 
-For questions or collaboration, please open an issue on GitHub.
+
 
 ---
 
