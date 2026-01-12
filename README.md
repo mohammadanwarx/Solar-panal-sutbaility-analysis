@@ -29,30 +29,6 @@ The system produces actionable priority lists for sustainable urban energy plann
 
 ---
 
-## � Libraries Used
-
-**Geospatial Analysis:**
-- `geopandas` 1.1.2 - Vector data manipulation and spatial operations
-- `shapely` 2.1.0 - Geometric operations and polygon handling
-- `pyproj` 3.8.0 - Coordinate reference system transformations
-- `folium` 0.20.0 - Interactive web maps with Leaflet.js
-
-**Data Processing:**
-- `pandas` 2.3.3 - Data wrangling and tabular analysis
-- `numpy` 2.4.1 - Numerical computing and array operations
-- `scipy` 1.17.0 - Scientific computing and spatial interpolation
-
-**Visualization:**
-- `matplotlib` 3.10.8 - Static plots and choropleth maps
-- `seaborn` 0.13.2 - Statistical visualizations and heatmaps
-- `networkx` 3.x - Graph visualization for KD-tree neighbor analysis
-
-**Development & Testing:**
-- `pytest` 8.4.0 - Unit testing framework
-- `requests` 2.33.0 - HTTP requests for API clients
-
----
-
 ## 📊 Visualizations
 
 ### Amsterdam Buildings Solar Potential Map
@@ -231,28 +207,36 @@ jupyter notebook
 - Outputs: `ranked_test_buildings.json`, `top_20_test_buildings.json`
 
 **Notebook 03 - Visualization:**
-- Generates choropleth suitability map
-- Creates 4-panel scatter analysis (area vs energy, orientation, shading, distributions)
-- Produces correlation matrix heatmap
-- Builds statistical summary plots
-- Exports top 10 buildings chart
-- Saves CSV priority list and JSON summary report
-- Outputs: All PNG maps/figures, `top_20_priority_buildings.csv`, `summary_report.json`
+- Generates choropleth suitability maps
+- Creates correlation matrix heatmap
+- Produces pairwise scatter plot analysis
+- Builds KD-tree spatial neighbor network visualization
+- Generates interactive Folium maps
+- Exports CSV priority lists and JSON summary reports
+- Outputs: `correlation_matrix.png`, `pairwise_analysis.png`, `kdtree_visualization.png`, HTML maps, CSV/JSON reports
 
 ### Using Python Scripts
 
+The project is primarily designed to be used through Jupyter notebooks for interactive exploration and visualization. Individual modules can be imported and used in custom scripts:
+
+```python
+# Example: Import and use modules
+from src.data_acquisition import fetch_pdok_buildings, PVGISClient
+from src.geometry import calculate_roof_area, calculate_roof_orientation
+from src.solar import calculate_solar_potential
+from src.shading import calculate_shading_factor
+from src.ranking import calculate_suitability_score, rank_buildings
+
+# Fetch buildings
+buildings = fetch_pdok_buildings(bbox=(4.85, 52.35, 4.95, 52.40))
+
+# Calculate metrics
+# ... your custom workflow
+```
+
+**Run Tests:**
 ```bash
-# Using Poetry
-poetry run python src/data_acquisition.py  # Fetch BAG3D and PVGIS data
-poetry run python src/ranking.py           # Calculate suitability and rank buildings
-
-# Using pip
-python src/data_acquisition.py
-python src/ranking.py
-
-# Run tests
-poetry run pytest tests/ -v                # With Poetry
-pytest tests/ -v                            # With pip
+pytest tests/ -v                            # Run all tests
 pytest tests/ --cov=src                     # With coverage report
 pytest tests/test_geometry.py -v            # Specific test file
 ```
@@ -292,6 +276,44 @@ The analysis follows a multi-criteria approach combining geometric, environmenta
 - BAG3D building footprints via WFS API for geometry and heights
 - PVGIS solar irradiance database via REST API for annual radiation values
 - SciPy spatial interpolation to map solar values to building centroids
+
+### Mathematical Formulations
+
+**1. Roof Area (Shoelace Formula)**
+
+$$A = \frac{1}{2} \left| \sum_{i=0}^{n-1} (x_i y_{i+1} - x_{i+1} y_i) \right|$$
+
+Calculates polygon area from coordinate pairs by summing cross products of consecutive vertices.
+
+**2. Orientation Score**
+
+$$O = 1 - \frac{|\theta - 180°|}{180}$$
+
+Normalizes roof azimuth to [0,1] range where south-facing (180°) scores highest.
+
+**3. Shading Intensity (per neighboring building)**
+
+$$I_j = \frac{h_{diff}}{50} \times \left(1 - \frac{d_j}{L_{shadow}}\right) \times size_{factor}$$
+
+Calculates shadow impact based on height difference, distance decay, and building size.
+
+**4. Total Shading (RMS Aggregation)**
+
+$$S_{total} = \sqrt{\frac{1}{k}\sum_{j=1}^{k} I_j^2}$$
+
+Combines individual shadow contributions using root mean square to prevent overestimation.
+
+**5. Annual Energy Potential**
+
+$$E = A \times H \times \eta \times (1 - S)$$
+
+Where: $A$ = roof area (m²), $H$ = solar irradiance (kWh/m²/year), $\eta$ = panel efficiency (0.18), $S$ = shading factor [0-1]
+
+**6. Suitability Score**
+
+$$Score = 100 \times (0.4E_{norm} + 0.2O_{norm} + 0.2(1-S) + 0.2A_{norm})$$
+
+Weighted combination of normalized factors scaled to 0-100 range for building classification.
 
 ---
 
@@ -344,28 +366,6 @@ The analysis follows a multi-criteria approach combining geometric, environmenta
 **Date:** January 2026
 
 For questions or collaboration, please open an issue on [GitHub](https://github.com/mohammadanwarx/Solar-panal-sutbaility-analysis).
-
----
-
-## 🤝 Contributions
-
-**Package:** `solar-panel-suitability` v0.1.0 - Available on [PyPI](https://pypi.org/project/solar-panel-suitability/)
-
-**Mo Anwar:**
-- Project architecture and implementation
-- Spatial algorithms (KD-tree, binary search, quicksort)
-- Shading analysis and energy calculations
-- PyPI package publishing and deployment
-- Testing framework and unit tests
-- Documentation and README
-
-**Vallary Onyando:**
-- Data acquisition and API integration
-- Geometric analysis and solar interpolation
-- Visualization and interactive maps
-- Suitability ranking algorithm
-- Jupyter notebooks development
-- Results analysis and reporting
 
 
 
