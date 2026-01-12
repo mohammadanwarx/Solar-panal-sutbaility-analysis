@@ -336,10 +336,36 @@ The analysis follows a multi-criteria approach combining geometric, environmenta
 
 ## 📧 Contact
 
-**Authors:** Mo Anwar  
-**Email:** mohammadanwarx99@gmail.com
+**Authors:**  
+- **Mo Anwar** - mohammadanwarx99@gmail.com  
+- **Vallary Onyando** - valonyando@gmail.com
+
 **Course:** Scientific Programming for Geospatial Sciences - ITC, University of Twente  
 **Date:** January 2026
+
+For questions or collaboration, please open an issue on [GitHub](https://github.com/mohammadanwarx/Solar-panal-sutbaility-analysis).
+
+---
+
+## 🤝 Contributions
+
+**Package:** `solar-panel-suitability` v0.1.0 - Available on [PyPI](https://pypi.org/project/solar-panel-suitability/)
+
+**Mo Anwar:**
+- Project architecture and implementation
+- Spatial algorithms (KD-tree, binary search, quicksort)
+- Shading analysis and energy calculations
+- PyPI package publishing and deployment
+- Testing framework and unit tests
+- Documentation and README
+
+**Vallary Onyando:**
+- Data acquisition and API integration
+- Geometric analysis and solar interpolation
+- Visualization and interactive maps
+- Suitability ranking algorithm
+- Jupyter notebooks development
+- Results analysis and reporting
 
 
 
